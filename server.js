@@ -2,7 +2,7 @@ import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
 import { extname, join, normalize } from "node:path";
 
-const host = "127.0.0.1";
+const host = process.env.HOST || (process.env.WEBSITE_SITE_NAME ? "0.0.0.0" : "127.0.0.1");
 const port = Number(process.env.PORT || 3000);
 const publicDir = join(process.cwd(), "public");
 
