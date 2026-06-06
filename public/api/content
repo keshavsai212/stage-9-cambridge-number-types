@@ -1,0 +1,363 @@
+{
+  "microPrompt": "Create a responsive Stage 9 Cambridge IGCSE maths website about different types of numbers. The first screen must be a useful learning app, not a landing page. Include a separate tab called Number Types with detailed explanations of natural numbers, whole numbers, integers, fractions, rational numbers, irrational numbers, surds, decimals, square numbers, cube numbers, prime numbers, composite numbers, factors, multiples, and real numbers. Add another tab called Quiz Game with a fun 8-question multiple-choice pizza-slice reward game. Each correct answer adds 1 pizza slice, each wrong answer removes 1 pizza slice if the player has any, and the goal is to collect all 8 slices. Show a visual pizza tracker, instant feedback, progress, final result, and restart button. Use clear curriculum-friendly language and a clean frontend with a small backend API that serves the lesson and quiz content.",
+  "numberTypes": [
+    {
+      "id": "overview",
+      "label": "Number Types",
+      "title": "Stage 9 Number Types",
+      "definition": "Numbers can be grouped by their properties. Stage 9 Cambridge IGCSE work often asks you to recognise, compare, simplify, and use these groups in calculations.",
+      "examples": [
+        "Natural",
+        "Integer",
+        "Rational",
+        "Irrational",
+        "Surd",
+        "Real"
+      ],
+      "nonExamples": [
+        "Undefined values",
+        "Expressions without a numerical value"
+      ],
+      "detail": "A useful map is: natural numbers are inside whole numbers, whole numbers are inside integers, integers are inside rational numbers, and rational plus irrational numbers form the real numbers.",
+      "examTip": "When classifying a number, ask whether it counts, whether it is negative, whether it can be written as a fraction, and whether a root simplifies exactly."
+    },
+    {
+      "id": "natural",
+      "label": "Natural Numbers",
+      "title": "Natural Numbers",
+      "definition": "Natural numbers are the counting numbers: 1, 2, 3, 4, and so on.",
+      "examples": [
+        "1",
+        "8",
+        "52",
+        "1000"
+      ],
+      "nonExamples": [
+        "0",
+        "-4",
+        "2.5",
+        "1/3"
+      ],
+      "detail": "They are used when counting objects. Some courses include 0, but in many Cambridge-style lessons 0 is treated separately as a whole number.",
+      "examTip": "If the question says positive whole numbers, it is usually describing natural numbers."
+    },
+    {
+      "id": "whole",
+      "label": "Whole Numbers",
+      "title": "Whole Numbers",
+      "definition": "Whole numbers are natural numbers together with 0.",
+      "examples": [
+        "0",
+        "3",
+        "19",
+        "240"
+      ],
+      "nonExamples": [
+        "-1",
+        "0.6",
+        "5/2",
+        "sqrt(2)"
+      ],
+      "detail": "Whole numbers are helpful for counts where none is possible, such as 0 marks, 0 apples, or 0 goals.",
+      "examTip": "Whole numbers do not include negatives, fractions, or decimals."
+    },
+    {
+      "id": "integers",
+      "label": "Integers",
+      "title": "Integers",
+      "definition": "Integers are positive whole numbers, negative whole numbers, and 0.",
+      "examples": [
+        "-12",
+        "-1",
+        "0",
+        "34"
+      ],
+      "nonExamples": [
+        "1/2",
+        "-3.7",
+        "sqrt(5)",
+        "pi"
+      ],
+      "detail": "They appear in temperature, bank balances, elevation, and directed movement.",
+      "examTip": "Every whole number is an integer, but not every integer is a whole number."
+    },
+    {
+      "id": "fractions",
+      "label": "Fractions",
+      "title": "Fractions",
+      "definition": "A fraction shows part of a whole or a division, written as numerator over denominator.",
+      "examples": [
+        "1/2",
+        "3/4",
+        "-7/5",
+        "12/3"
+      ],
+      "nonExamples": [
+        "A denominator of 0",
+        "sqrt(2)",
+        "pi"
+      ],
+      "detail": "Fractions can be proper, improper, mixed, equivalent, or simplified. Any fraction with integer numerator and non-zero integer denominator is rational.",
+      "examTip": "Always simplify fractions where possible, and never leave 0 in the denominator."
+    },
+    {
+      "id": "rational",
+      "label": "Rational Numbers",
+      "title": "Rational Numbers",
+      "definition": "A rational number can be written as p/q, where p and q are integers and q is not 0.",
+      "examples": [
+        "5/6",
+        "-3",
+        "0.25",
+        "0.333..."
+      ],
+      "nonExamples": [
+        "sqrt(2)",
+        "pi",
+        "0.1010010001..."
+      ],
+      "detail": "Terminating decimals and recurring decimals are rational. Integers are rational because any integer n can be written as n/1.",
+      "examTip": "Recurring decimal means rational; non-recurring and non-terminating usually means irrational."
+    },
+    {
+      "id": "irrational",
+      "label": "Irrational Numbers",
+      "title": "Irrational Numbers",
+      "definition": "An irrational number cannot be written as a fraction of two integers.",
+      "examples": [
+        "sqrt(2)",
+        "sqrt(3)",
+        "pi",
+        "0.1010010001..."
+      ],
+      "nonExamples": [
+        "4/5",
+        "-9",
+        "0.125",
+        "0.777..."
+      ],
+      "detail": "Its decimal expansion never terminates and never repeats in a fixed pattern.",
+      "examTip": "If a square root does not simplify to a whole number or fraction, it is often irrational."
+    },
+    {
+      "id": "surds",
+      "label": "Surds",
+      "title": "Surds",
+      "definition": "A surd is an irrational root left in exact form.",
+      "examples": [
+        "sqrt(2)",
+        "sqrt(7)",
+        "3sqrt(5)",
+        "sqrt(18) = 3sqrt(2)"
+      ],
+      "nonExamples": [
+        "sqrt(4) = 2",
+        "sqrt(9) = 3",
+        "sqrt(25) = 5"
+      ],
+      "detail": "Surds are exact. They avoid rounding errors and are simplified by taking out square factors.",
+      "examTip": "Look for square factors such as 4, 9, 16, 25, 36, and 49 when simplifying surds."
+    },
+    {
+      "id": "decimals",
+      "label": "Decimals",
+      "title": "Decimals",
+      "definition": "Decimals use place value after the decimal point to show tenths, hundredths, thousandths, and smaller parts.",
+      "examples": [
+        "0.5",
+        "3.14",
+        "-2.75",
+        "0.333..."
+      ],
+      "nonExamples": [
+        "sqrt(2) as an exact surd",
+        "An undefined value"
+      ],
+      "detail": "Decimals can be terminating, recurring, or non-recurring. Terminating and recurring decimals are rational.",
+      "examTip": "Check whether the decimal ends, repeats, or continues without a pattern."
+    },
+    {
+      "id": "prime",
+      "label": "Prime Numbers",
+      "title": "Prime Numbers",
+      "definition": "A prime number has exactly two factors: 1 and itself.",
+      "examples": [
+        "2",
+        "3",
+        "5",
+        "7",
+        "11"
+      ],
+      "nonExamples": [
+        "1",
+        "4",
+        "9",
+        "15"
+      ],
+      "detail": "2 is the only even prime number. 1 is not prime because it has only one factor.",
+      "examTip": "Prime factorisation breaks a number into a product of primes."
+    },
+    {
+      "id": "composite",
+      "label": "Composite Numbers",
+      "title": "Composite Numbers",
+      "definition": "A composite number has more than two factors.",
+      "examples": [
+        "4",
+        "6",
+        "8",
+        "12",
+        "21"
+      ],
+      "nonExamples": [
+        "1",
+        "2",
+        "3",
+        "5"
+      ],
+      "detail": "Composite numbers can be split into smaller factor pairs.",
+      "examTip": "If a number has a factor other than 1 and itself, it is composite."
+    },
+    {
+      "id": "squares-cubes",
+      "label": "Squares & Cubes",
+      "title": "Square and Cube Numbers",
+      "definition": "A square number is made by multiplying a number by itself. A cube number is made by multiplying a number by itself twice more.",
+      "examples": [
+        "Squares: 1, 4, 9, 16, 25",
+        "Cubes: 1, 8, 27, 64, 125"
+      ],
+      "nonExamples": [
+        "2 is not a square",
+        "12 is not a cube"
+      ],
+      "detail": "Square and cube numbers help with roots, indices, surds, area, and volume.",
+      "examTip": "Memorise common squares up to 15 squared and cubes up to 10 cubed."
+    },
+    {
+      "id": "factors-multiples",
+      "label": "Factors & Multiples",
+      "title": "Factors and Multiples",
+      "definition": "A factor divides a number exactly. A multiple is the result of multiplying a number by an integer.",
+      "examples": [
+        "Factors of 12: 1, 2, 3, 4, 6, 12",
+        "Multiples of 5: 5, 10, 15, 20"
+      ],
+      "nonExamples": [
+        "5 is not a factor of 12",
+        "14 is not a multiple of 5"
+      ],
+      "detail": "Factors and multiples are used for HCF, LCM, simplifying fractions, and prime factor trees.",
+      "examTip": "Use prime factorisation for larger HCF and LCM questions."
+    },
+    {
+      "id": "real",
+      "label": "Real Numbers",
+      "title": "Real Numbers",
+      "definition": "Real numbers are all rational and irrational numbers.",
+      "examples": [
+        "-6",
+        "0",
+        "2/3",
+        "sqrt(11)",
+        "pi"
+      ],
+      "nonExamples": [
+        "sqrt(-1)",
+        "Undefined expressions"
+      ],
+      "detail": "Real numbers are the values that can be placed on the number line.",
+      "examTip": "At Stage 9, most ordinary numbers you meet are real numbers."
+    }
+  ],
+  "quizQuestions": [
+    {
+      "question": "Which number is a natural number?",
+      "options": [
+        "7",
+        "0.4",
+        "-2",
+        "sqrt(3)"
+      ],
+      "answer": "7",
+      "feedback": "Natural numbers are counting numbers such as 1, 2, 3, and 7."
+    },
+    {
+      "question": "Which number is rational?",
+      "options": [
+        "sqrt(2)",
+        "pi",
+        "3/4",
+        "0.1010010001..."
+      ],
+      "answer": "3/4",
+      "feedback": "A rational number can be written as a fraction of two integers."
+    },
+    {
+      "question": "Which example is a surd?",
+      "options": [
+        "sqrt(16)",
+        "sqrt(5)",
+        "0.25",
+        "8"
+      ],
+      "answer": "sqrt(5)",
+      "feedback": "sqrt(5) cannot be simplified to a rational number, so it is a surd."
+    },
+    {
+      "question": "Which number is an integer but not a whole number?",
+      "options": [
+        "-6",
+        "0",
+        "4",
+        "2.5"
+      ],
+      "answer": "-6",
+      "feedback": "Negative whole-number values are integers, but they are not whole numbers."
+    },
+    {
+      "question": "Which number is prime?",
+      "options": [
+        "1",
+        "9",
+        "11",
+        "21"
+      ],
+      "answer": "11",
+      "feedback": "11 has exactly two factors: 1 and 11."
+    },
+    {
+      "question": "Which decimal is rational?",
+      "options": [
+        "0.333...",
+        "pi",
+        "sqrt(7)",
+        "0.1010010001..."
+      ],
+      "answer": "0.333...",
+      "feedback": "Recurring decimals are rational because they can be written as fractions."
+    },
+    {
+      "question": "Which list contains only factors of 12?",
+      "options": [
+        "1, 2, 3, 4, 6, 12",
+        "2, 4, 5, 8",
+        "3, 6, 9, 12",
+        "1, 5, 10, 12"
+      ],
+      "answer": "1, 2, 3, 4, 6, 12",
+      "feedback": "A factor divides the number exactly with no remainder."
+    },
+    {
+      "question": "Which number is a cube number?",
+      "options": [
+        "16",
+        "25",
+        "27",
+        "49"
+      ],
+      "answer": "27",
+      "feedback": "27 is 3 x 3 x 3, so it is a cube number."
+    }
+  ]
+}
