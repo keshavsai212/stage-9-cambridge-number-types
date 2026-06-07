@@ -1,6 +1,8 @@
 const tabs = document.querySelector("#tabs");
 const content = document.querySelector("#content");
 const microPrompt = document.querySelector("#microPrompt");
+const themeToggle = document.querySelector("#themeToggle");
+const themeLabel = document.querySelector(".theme-label");
 
 let lessons = [];
 let quizQuestions = [];
@@ -12,6 +14,21 @@ let bestStreak = 0;
 let selectedAnswer = "";
 let lastAnswerCorrect = false;
 let quizComplete = false;
+
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  localStorage.setItem("stage9-theme", theme);
+  const isDark = theme === "dark";
+  themeToggle.setAttribute("aria-pressed", String(isDark));
+  themeToggle.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
+  themeLabel.textContent = isDark ? "Light mode" : "Dark mode";
+}
+
+function initTheme() {
+  const savedTheme = localStorage.getItem("stage9-theme");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  applyTheme(savedTheme || (prefersDark ? "dark" : "light"));
+}
 
 function chips(items) {
   return items.map((item) => `<li>${item}</li>`).join("");
@@ -71,8 +88,11 @@ function renderTabs() {
 }
 
 function renderContent() {
+  content.classList.remove("content-enter");
+
   if (activeId === "quiz-game") {
     renderQuiz();
+    animateContent();
     return;
   }
 
@@ -106,6 +126,13 @@ function renderContent() {
       </section>
     </div>
   `;
+  animateContent();
+}
+
+function animateContent() {
+  requestAnimationFrame(() => {
+    content.classList.add("content-enter");
+  });
 }
 
 function renderQuiz() {
@@ -235,10 +262,16 @@ function nextQuestion() {
 tabs.addEventListener("click", (event) => {
   const tab = event.target.closest(".tab");
   if (!tab) return;
+  if (activeId === tab.dataset.id) return;
 
   activeId = tab.dataset.id;
   renderTabs();
   renderContent();
+});
+
+themeToggle.addEventListener("click", () => {
+  const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  applyTheme(nextTheme);
 });
 
 content.addEventListener("click", (event) => {
@@ -271,4 +304,5 @@ async function init() {
   renderContent();
 }
 
+initTheme();
 init();
