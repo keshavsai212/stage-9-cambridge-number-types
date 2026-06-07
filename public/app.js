@@ -7,7 +7,10 @@ let quizQuestions = [];
 let activeId = "overview";
 let quizIndex = 0;
 let score = 0;
+let streak = 0;
+let bestStreak = 0;
 let selectedAnswer = "";
+let lastAnswerCorrect = false;
 let quizComplete = false;
 
 function chips(items) {
@@ -15,6 +18,8 @@ function chips(items) {
 }
 
 function renderPizzaTracker() {
+  const levelName = getLevelName(score);
+
   return `
     <div class="pizza-tracker" aria-label="${score} of ${quizQuestions.length} pizza slices collected">
       <div class="pizza-pie" style="--slices: ${score};">
@@ -25,10 +30,26 @@ function renderPizzaTracker() {
       </div>
       <div class="pizza-status">
         <strong>${score} / ${quizQuestions.length} slices</strong>
-        <span>Collect every slice to complete the pizza.</span>
+        <span>${levelName}</span>
+        <small>Collect every slice to complete the pizza.</small>
       </div>
     </div>
   `;
+}
+
+function getLevelName(sliceCount) {
+  if (sliceCount === quizQuestions.length) return "Level: Full Pizza Master";
+  if (sliceCount >= 6) return "Level: Topping Tactician";
+  if (sliceCount >= 4) return "Level: Fraction Chef";
+  if (sliceCount >= 2) return "Level: Number Ninja";
+  return "Level: Dough Starter";
+}
+
+function getEncouragement(isCorrect) {
+  if (isCorrect && streak >= 3) return "Hot streak. Your pizza is cooking fast.";
+  if (isCorrect) return "Nice slice. That number type is yours.";
+  if (score === 0) return "No slices to lose yet. Shake it off and grab the next one.";
+  return "A slice slipped away, but the next question can win it back.";
 }
 
 function renderTabs() {
@@ -91,23 +112,27 @@ function renderQuiz() {
   if (quizComplete) {
     const message =
       score === quizQuestions.length
-        ? "Full pizza completed. You answered like a number-types champion."
+        ? "Full pizza completed. You answered like a number-types champion and cleared the challenge."
         : score >= Math.ceil(quizQuestions.length * 0.7)
-          ? "You collected a strong stack of slices. A quick review can help you finish the pizza next time."
-          : "You collected some slices. Revisit the explanation tabs, then try to build the full pizza.";
+          ? "You collected a strong stack of slices. One quick review run can help you finish the full pizza."
+          : "You collected some slices. Revisit the explanation tabs, then jump back in for a stronger run.";
 
     content.innerHTML = `
       <div class="content-header">
         <div>
-          <h2>Quiz Game</h2>
+          <h2>Pizza Slice Challenge</h2>
           <p class="definition">Final pizza: ${score} out of ${quizQuestions.length} slices collected.</p>
         </div>
         <div class="badge quiz-badge" aria-hidden="true">${score}/${quizQuestions.length}</div>
       </div>
-      <section class="quiz-card result-card">
+      <section class="quiz-card result-card ${score === quizQuestions.length ? "perfect-run" : ""}">
         ${renderPizzaTracker()}
         <h3>Result</h3>
         <p>${message}</p>
+        <div class="result-stats">
+          <span>Best streak: ${bestStreak}</span>
+          <span>${getLevelName(score)}</span>
+        </div>
         <button class="action-button" type="button" data-action="restart">Restart Quiz</button>
       </section>
     `;
@@ -121,8 +146,8 @@ function renderQuiz() {
   content.innerHTML = `
     <div class="content-header">
       <div>
-        <h2>Quiz Game</h2>
-        <p class="definition">Correct answers add a pizza slice. Wrong answers remove one if you have any.</p>
+        <h2>Pizza Slice Challenge</h2>
+        <p class="definition">Win slices with correct answers, protect your pizza from wrong ones, and chase a perfect 8-slice finish.</p>
       </div>
       <div class="badge quiz-badge" aria-label="Current pizza slices">${score}/${quizQuestions.length}</div>
     </div>
@@ -131,7 +156,12 @@ function renderQuiz() {
       ${renderPizzaTracker()}
       <div class="quiz-meta">
         <span>Question ${progress}</span>
+        <span>Streak ${streak}</span>
         <span>Pizza slices ${score}</span>
+      </div>
+      <div class="challenge-strip">
+        <strong>${getLevelName(score)}</strong>
+        <span>Best streak: ${bestStreak}</span>
       </div>
       <h3>${question.question}</h3>
       <div class="answers">
@@ -150,8 +180,9 @@ function renderQuiz() {
       </div>
       ${
         answered
-          ? `<div class="feedback ${selectedAnswer === question.answer ? "right" : "review"}">
-              <strong>${selectedAnswer === question.answer ? "Correct: 1 slice added" : "Not quite: 1 slice lost"}</strong>
+          ? `<div class="feedback ${lastAnswerCorrect ? "right" : "review"}">
+              <strong>${lastAnswerCorrect ? "Correct: 1 slice added" : "Not quite: 1 slice lost"}</strong>
+              <span>${getEncouragement(lastAnswerCorrect)}</span>
               <p>${question.feedback}</p>
             </div>
             <button class="action-button" type="button" data-action="next">
@@ -166,7 +197,10 @@ function renderQuiz() {
 function restartQuiz() {
   quizIndex = 0;
   score = 0;
+  streak = 0;
+  bestStreak = 0;
   selectedAnswer = "";
+  lastAnswerCorrect = false;
   quizComplete = false;
   renderQuiz();
 }
@@ -177,8 +211,13 @@ function chooseAnswer(answer) {
   selectedAnswer = answer;
   if (answer === quizQuestions[quizIndex].answer) {
     score = Math.min(score + 1, quizQuestions.length);
+    streak += 1;
+    bestStreak = Math.max(bestStreak, streak);
+    lastAnswerCorrect = true;
   } else {
     score = Math.max(score - 1, 0);
+    streak = 0;
+    lastAnswerCorrect = false;
   }
   renderQuiz();
 }
