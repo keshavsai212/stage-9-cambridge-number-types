@@ -6,6 +6,7 @@ const themeLabel = document.querySelector(".theme-label");
 
 let lessons = [];
 let quizQuestions = [];
+let activeQuizQuestions = [];
 let activeId = "overview";
 let quizIndex = 0;
 let score = 0;
@@ -34,19 +35,35 @@ function chips(items) {
   return items.map((item) => `<li>${item}</li>`).join("");
 }
 
+function shuffleQuestions(questions) {
+  const shuffled = [...questions];
+
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
+  }
+
+  return shuffled;
+}
+
+function getQuestionCount() {
+  return activeQuizQuestions.length || quizQuestions.length;
+}
+
 function renderPizzaTracker() {
   const levelName = getLevelName(score);
+  const questionCount = getQuestionCount();
 
   return `
-    <div class="pizza-tracker" aria-label="${score} of ${quizQuestions.length} pizza slices collected">
+    <div class="pizza-tracker" aria-label="${score} of ${questionCount} pizza slices collected">
       <div class="pizza-pie" style="--slices: ${score};">
         ${Array.from(
-          { length: quizQuestions.length },
+          { length: questionCount },
           (_, index) => `<span class="pizza-slice ${index < score ? "earned" : ""}" style="--slice-index: ${index};"></span>`
         ).join("")}
       </div>
       <div class="pizza-status">
-        <strong>${score} / ${quizQuestions.length} slices</strong>
+        <strong>${score} / ${questionCount} slices</strong>
         <span>${levelName}</span>
         <small>Collect every slice to complete the pizza.</small>
       </div>
@@ -55,7 +72,7 @@ function renderPizzaTracker() {
 }
 
 function getLevelName(sliceCount) {
-  if (sliceCount === quizQuestions.length) return "Level: Full Pizza Master";
+  if (sliceCount === getQuestionCount()) return "Level: Full Pizza Master";
   if (sliceCount >= 6) return "Level: Topping Tactician";
   if (sliceCount >= 4) return "Level: Fraction Chef";
   if (sliceCount >= 2) return "Level: Number Ninja";
@@ -136,11 +153,13 @@ function animateContent() {
 }
 
 function renderQuiz() {
+  const questionCount = getQuestionCount();
+
   if (quizComplete) {
     const message =
-      score === quizQuestions.length
+      score === questionCount
         ? "Full pizza completed. You answered like a number-types champion and cleared the challenge."
-        : score >= Math.ceil(quizQuestions.length * 0.7)
+        : score >= Math.ceil(questionCount * 0.7)
           ? "You collected a strong stack of slices. One quick review run can help you finish the full pizza."
           : "You collected some slices. Revisit the explanation tabs, then jump back in for a stronger run.";
 
@@ -148,11 +167,11 @@ function renderQuiz() {
       <div class="content-header">
         <div>
           <h2>Pizza Slice Challenge</h2>
-          <p class="definition">Final pizza: ${score} out of ${quizQuestions.length} slices collected.</p>
+          <p class="definition">Final pizza: ${score} out of ${questionCount} slices collected. Restart for a new question order.</p>
         </div>
-        <div class="badge quiz-badge" aria-hidden="true">${score}/${quizQuestions.length}</div>
+        <div class="badge quiz-badge" aria-hidden="true">${score}/${questionCount}</div>
       </div>
-      <section class="quiz-card result-card ${score === quizQuestions.length ? "perfect-run" : ""}">
+      <section class="quiz-card result-card ${score === questionCount ? "perfect-run" : ""}">
         ${renderPizzaTracker()}
         <h3>Result</h3>
         <p>${message}</p>
@@ -166,8 +185,8 @@ function renderQuiz() {
     return;
   }
 
-  const question = quizQuestions[quizIndex];
-  const progress = `${quizIndex + 1} / ${quizQuestions.length}`;
+  const question = activeQuizQuestions[quizIndex];
+  const progress = `${quizIndex + 1} / ${questionCount}`;
   const answered = Boolean(selectedAnswer);
 
   content.innerHTML = `
@@ -176,7 +195,7 @@ function renderQuiz() {
         <h2>Pizza Slice Challenge</h2>
         <p class="definition">Win slices with correct answers, protect your pizza from wrong ones, and chase a perfect 8-slice finish.</p>
       </div>
-      <div class="badge quiz-badge" aria-label="Current pizza slices">${score}/${quizQuestions.length}</div>
+      <div class="badge quiz-badge" aria-label="Current pizza slices">${score}/${questionCount}</div>
     </div>
 
     <section class="quiz-card">
@@ -222,6 +241,7 @@ function renderQuiz() {
 }
 
 function restartQuiz() {
+  activeQuizQuestions = shuffleQuestions(quizQuestions);
   quizIndex = 0;
   score = 0;
   streak = 0;
@@ -236,8 +256,8 @@ function chooseAnswer(answer) {
   if (selectedAnswer) return;
 
   selectedAnswer = answer;
-  if (answer === quizQuestions[quizIndex].answer) {
-    score = Math.min(score + 1, quizQuestions.length);
+  if (answer === activeQuizQuestions[quizIndex].answer) {
+    score = Math.min(score + 1, getQuestionCount());
     streak += 1;
     bestStreak = Math.max(bestStreak, streak);
     lastAnswerCorrect = true;
@@ -250,7 +270,7 @@ function chooseAnswer(answer) {
 }
 
 function nextQuestion() {
-  if (quizIndex === quizQuestions.length - 1) {
+  if (quizIndex === getQuestionCount() - 1) {
     quizComplete = true;
   } else {
     quizIndex += 1;
@@ -298,6 +318,7 @@ async function init() {
 
   lessons = data.numberTypes;
   quizQuestions = data.quizQuestions;
+  activeQuizQuestions = [...quizQuestions];
   microPrompt.textContent = data.microPrompt;
 
   renderTabs();
